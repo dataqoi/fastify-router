@@ -1,12 +1,16 @@
 {
   "name": "@naqoi/fastify-router",
   "license": "MIT",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "A simple and easy-to-use file-based routing system for Fastify.",
   "type": "commonjs",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": ["dist", "package.json", ".npmignore"],
+  "files": [
+    "dist",
+    "package.json",
+    ".npmignore"
+  ],
   "keywords": [
     "fastify",
     "router",
