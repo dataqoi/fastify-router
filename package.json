@@ -1,5 +1,5 @@
 {
-  "name": "@naqoi/fastify-router",
+  "name": "@dataqoi/fastify-router",
   "license": "MIT",
   "version": "0.0.4",
   "description": "A simple and easy-to-use file-based routing system for Fastify.",
@@ -22,12 +22,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/naqoi/fastify-router.git"
+    "url": "git+https://github.com/dataqoi/fastify-router.git"
   },
   "bugs": {
-    "url": "https://github.com/naqoi/fastify-router/issues"
+    "url": "https://github.com/dataqoi/fastify-router/issues"
   },
-  "homepage": "https://github.com/naqoi/fastify-router#readme",
+  "homepage": "https://github.com/dataqoi/fastify-router#readme",
   "author": "Nanoqoi <github@nanoqoi.com>",
   "exports": {
     ".": {

@@ -1,13 +1,13 @@
 {
   "private": true,
-  "name": "@naqoi/fastify-router-test-project",
+  "name": "@dataqoi/fastify-router-test-project",
   "version": "0.0.0",
   "main": "src/index.ts",
   "scripts": {
     "start": "npx -y tsx ."
   },
   "dependencies": {
-    "@naqoi/fastify-router": "file:../",
+    "@dataqoi/fastify-router": "file:../",
     "fastify": "^5.0.0"
   },
   "devDependencies": {

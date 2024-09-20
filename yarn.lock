@@ -5,6 +5,19 @@ __metadata:
   version: 8
   cacheKey: 10c0
 
+"@dataqoi/fastify-router@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "@dataqoi/fastify-router@workspace:."
+  dependencies:
+    "@types/node": "npm:^22.5.5"
+    fastify: "npm:^5.0.0"
+    fastify-plugin: "npm:^5.0.0"
+    prettier: "npm:^3.3.3"
+    tsup: "npm:^8.3.0"
+    typescript: "npm:^5.5.3"
+  languageName: unknown
+  linkType: soft
+
 "@esbuild/aix-ppc64@npm:0.23.1":
   version: 0.23.1
   resolution: "@esbuild/aix-ppc64@npm:0.23.1"
@@ -264,19 +277,6 @@ __metadata:
   checksum: 10c0/3d1ce6ebc69df9682a5a8896b414c6537e428a1d68b02fcc8363b04284a8ca0df04d0ee3013132252ab14f2527bc13bea6526a912ecb5658f0e39fd2860b4df4
   languageName: node
   linkType: hard
-
-"@naqoi/fastify-router@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "@naqoi/fastify-router@workspace:."
-  dependencies:
-    "@types/node": "npm:^22.5.5"
-    fastify: "npm:^5.0.0"
-    fastify-plugin: "npm:^5.0.0"
-    prettier: "npm:^3.3.3"
-    tsup: "npm:^8.3.0"
-    typescript: "npm:^5.5.3"
-  languageName: unknown
-  linkType: soft
 
 "@npmcli/agent@npm:^2.0.0":
   version: 2.2.2

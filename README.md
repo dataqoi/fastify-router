@@ -1,7 +1,7 @@
-# @naqoi/fastify-router
+# @dataqoi/fastify-router
 
-![CI](https://github.com/naqoi/fastify-router/actions/workflows/deploy.yml/badge.svg)
-[![NPM version](https://img.shields.io/npm/v/@naqoi/fastify-router.svg?style=flat)](https://www.npmjs.com/package/@naqoi/fastify-router)
+[![CI](https://github.com/dataqoi/fastify-router/actions/workflows/deploy.yml/badge.svg)](https://github.com/dataqoi/fastify-router/actions)
+[![NPM version](https://img.shields.io/npm/v/@dataqoi/fastify-router.svg?style=flat)](https://www.npmjs.com/package/@dataqoi/fastify-router)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://standardjs.com/)
 
 A simple and easy-to-use file-based routing system for Fastify.
@@ -9,7 +9,7 @@ A simple and easy-to-use file-based routing system for Fastify.
 ## Installation
 
 ```
-npm i @naqoi/fastify-router
+npm i @dataqoi/fastify-router
 ```
 
 ## Configuration
@@ -23,7 +23,7 @@ Autoload can be customised using the following options:
 
 ## Test Project
 
-If you would like to see a sample API project using `@naqoi/fastify-router`:
+If you would like to see a sample API project using `@dataqoi/fastify-router`:
 1. Clone this repository.
 2. Run `cd test` to navigate to the test project.
 3. Run `npm install` to install the dependencies.
@@ -32,11 +32,11 @@ If you would like to see a sample API project using `@naqoi/fastify-router`:
 
 ## Example
 
-A simple fastify server setup with `@naqoi/fastify-router`:
+A simple fastify server setup with `@dataqoi/fastify-router`:
 
 ```js
 const fastify = require('fastify')
-const router = require('@naqoi/fastify-router')
+const router = require('@dataqoi/fastify-router')
 
 const app = fastify()
 
@@ -52,7 +52,7 @@ or with ESM syntax:
 
 ```js
 import fastify from 'fastify'
-import router from '@naqoi/fastify-router'
+import router from '@dataqoi/fastify-router'
 
 const app = fastify()
 

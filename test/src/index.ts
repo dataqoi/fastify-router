@@ -1,5 +1,5 @@
 import fastify from 'fastify'
-import { fastifyRouter } from '@naqoi/fastify-router'
+import { fastifyRouter } from '@dataqoi/fastify-router'
 
 const app = fastify()
 
