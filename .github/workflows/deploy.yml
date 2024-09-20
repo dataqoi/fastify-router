@@ -1,5 +1,10 @@
 name: Build and publish NPM package
 
+permissions:
+  contents: write
+  packages: write
+  deployments: write
+
 on:
   push:
     branches:
