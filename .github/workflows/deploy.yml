@@ -69,11 +69,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  build-and-publish:
-    name: Build and publish
+  publish-to-npm:
+    name: Publish to NPM
     runs-on: ubuntu-latest
-    outputs:
-      changelog: ${{ steps.changelog.outputs.content }}
     needs:
       - version
     steps:
@@ -107,6 +105,51 @@ jobs:
         env:
           NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
 
+  publish-to-github:
+    name: Publish to GitHub packages
+    runs-on: ubuntu-latest
+    needs:
+      - version
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          cache: 'yarn'
+          registry-url: 'https://npm.pkg.github.com'
+
+      - name: Install
+        run: yarn --immutable
+
+      - name: Update package.json version
+        uses: jossef/action-set-json-field@v2.1
+        with:
+          file: package.json
+          field: version
+          value: ${{ needs.version.outputs.version }}
+
+      - name: Build
+        run: yarn build
+
+      - name: Populate .npmrc
+        run: |
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> .npmrc
+
+      - name: Deploy to NPM
+        run: npm publish
+        env:
+          NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  finalize:
+    name: Finalize
+    runs-on: ubuntu-latest
+    outputs:
+      changelog: ${{ steps.changelog.outputs.content }}
+    needs:
+      - publish-to-npm
+      - publish-to-github
+    steps:
       - name: Update package.json version
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
