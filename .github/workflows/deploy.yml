@@ -1,0 +1,110 @@
+name: Build and publish NPM package
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  version:
+    name: Version
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      tag: ${{ steps.version.outputs.tag }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          cache: 'yarn'
+
+      - name: Install
+        run: yarn --immutable
+
+      - name: Bump version and push tag
+        id: tag_version_release
+        uses: mathieudutour/github-tag-action@v6.1
+        with:
+          dry_run: false
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          release_branches: main
+
+      - name: Tag version output
+        id: tag_version
+        run: |
+          echo "::set-output name=new_tag::${{ steps.tag_version_prerelease.outputs.new_tag || steps.tag_version_release.outputs.new_tag }}"
+          echo "::set-output name=new_version::${{ steps.tag_version_prerelease.outputs.new_version || steps.tag_version_release.outputs.new_version }}"
+          echo "::set-output name=previous_version::${{ steps.tag_version_prerelease.outputs.previous_version || steps.tag_version_release.outputs.previous_version }}"
+          echo "::set-output name=changelog::${{ steps.tag_version_prerelease.outputs.changelog || steps.tag_version_release.outputs.changelog }}"
+
+      - name: Create a release
+        uses: ncipollo/release-action@v1
+        id: create_release
+        with:
+          tag: ${{ steps.tag_version.outputs.new_tag }}
+          name: ${{ steps.tag_version.outputs.new_tag }}
+          body: ${{ steps.tag_version.outputs.changelog }}
+          prerelease: false
+
+      - name: Export version
+        id: version
+        run: |
+          echo "::set-output name=version::${{ steps.tag_version.outputs.new_version || steps.tag_version.outputs.previous_version }}"
+          echo "::set-output name=tag::${{ steps.tag_version.outputs.new_tag || steps.tag_version.outputs.previous_version }}"
+
+      - name: Remove tags & release on fail
+        if: failure()
+        uses: dev-drprasad/delete-tag-and-release@v0.2.1
+        with:
+          tag_name: ${{ steps.tag_version_release.outputs.new_tag }}
+          delete_release: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build-and-publish:
+    name: Build and publish
+    runs-on: ubuntu-latest
+    outputs:
+      changelog: ${{ steps.changelog.outputs.content }}
+    needs:
+      - version
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          cache: 'yarn'
+
+      - name: Install
+        run: yarn --immutable
+
+      - name: Update package.json version
+        uses: jossef/action-set-json-field@v2.1
+        with:
+          file: package.json
+          field: version
+          value: ${{ needs.version.outputs.version }}
+
+      - name: Build
+        run: yarn build
+
+      - name: Deploy to NPM
+        run: npm publish
+        env:
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+
+      - name: Update package.json version
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          branch: main
+          commit_message: 'Update package.json version to ${{ needs.version.outputs.version }}'
+          commit_options: '--no-verify'
+          commit_user_name: 'Nanobot'
+          commit_user_email: 'nano[bot]@nanoqoi.com'
+          commit_author: 'Nanobot <nano[bot]@nanoqoi.com>'
+          file_pattern: 'package.json'
+          push_options: '--force'
+          skip_fetch: false

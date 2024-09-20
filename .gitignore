@@ -12,3 +12,5 @@ yarn-error.log*
 .pnp.js
 
 .vscode/*
+
+/test/node_modules

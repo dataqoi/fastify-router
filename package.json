@@ -1,0 +1,50 @@
+{
+  "name": "@naqoi/fastify-router",
+  "license": "MIT",
+  "version": "0.0.1",
+  "description": "A simple and easy-to-use file-based routing system for Fastify.",
+  "type": "commonjs",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist", "package.json", ".npmignore"],
+  "keywords": [
+    "fastify",
+    "router",
+    "directory",
+    "automatically"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/naqoi/fastify-router.git"
+  },
+  "bugs": {
+    "url": "https://github.com/naqoi/fastify-router/issues"
+  },
+  "homepage": "https://github.com/naqoi/fastify-router#readme",
+  "author": "Nanoqoi <github@nanoqoi.com>",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "test": "cd test && npm run start",
+    "build": "npx -y tsup lib/index.ts --minify --dts --format esm,cjs --out-dir dist"
+  },
+  "dependencies": {
+    "fastify-plugin": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.5.5",
+    "fastify": "^5.0.0",
+    "prettier": "^3.3.3",
+    "tsup": "^8.3.0",
+    "typescript": "^5.5.3"
+  },
+  "packageManager": "yarn@4.5.0"
+}
