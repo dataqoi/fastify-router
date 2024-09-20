@@ -24,6 +24,7 @@ jobs:
         with:
           node-version: '20'
           cache: 'yarn'
+          registry-url: 'https://registry.npmjs.org'
 
       - name: Install
         run: yarn --immutable
@@ -82,6 +83,7 @@ jobs:
         with:
           node-version: '20'
           cache: 'yarn'
+          registry-url: 'https://registry.npmjs.org'
 
       - name: Install
         run: yarn --immutable
@@ -95,6 +97,10 @@ jobs:
 
       - name: Build
         run: yarn build
+
+      - name: Populate .npmrc
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" >> .npmrc
 
       - name: Deploy to NPM
         run: npm publish
