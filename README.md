@@ -1,6 +1,6 @@
 # @naqoi/fastify-router
 
-![CI](https://github.com/naqoi/fastify-router/workflows/CI/badge.svg)
+![CI](https://github.com/naqoi/fastify-router/actions/workflows/deploy.yml/badge.svg)
 [![NPM version](https://img.shields.io/npm/v/@naqoi/fastify-router.svg?style=flat)](https://www.npmjs.com/package/@naqoi/fastify-router)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://standardjs.com/)
 
