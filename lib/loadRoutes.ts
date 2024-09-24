@@ -26,9 +26,9 @@ const AVAILABLE_METHODS: HTTPMethods[] = [
 const REGEX = {
   RouterFileParam: /\[([A-z0-9]+)]/gi,
   RouterFileParamOptional: /\[([A-z0-9]+)~]/gi,
-  FileExtension: /\.m?(ts|js)$/gi,
+  FileExtension: /\.m?(ts|js)x?$/gi,
   getFileWithExtension: (fileName: string) =>
-    new RegExp(`${fileName}.*\\.m?(ts|js)$`, 'gi'),
+    new RegExp(`${fileName}.*\\.m?(ts|js)x?$`, 'gi'),
 }
 
 const IGNORED_PATTERNS = [
