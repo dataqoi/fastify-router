@@ -4,7 +4,7 @@ import type { FastifyInstance, RouteHandlerMethod } from 'fastify'
 import type { HTTPMethods } from 'fastify'
 import type { FastifyRouterPluginOptions } from 'lib/plugin'
 
-const FILE_EXTENSIONS = ['ts', 'js', 'mjs', 'mts']
+const FILE_EXTENSIONS = ['.ts', '.js', '.mjs', '.mts']
 
 const AVAILABLE_METHODS: HTTPMethods[] = [
   'GET',
@@ -35,8 +35,8 @@ const IGNORED_PATTERNS = [
   (file: string) => file.startsWith('_'),
   (file: string) => file.startsWith('.'),
   (file: string) => file.endsWith('.map'),
+  (file: string) => file.endsWith('.json'),
   (file: string) => file.endsWith('.d.ts'),
-  (file: string) => file === 'types.ts',
 ]
 
 const sanitizePath = (path: string) => path.replace(/\\+/gi, '/')
@@ -70,9 +70,9 @@ const loadRoutesInDirectory = async (
 
   for (const file of files) {
     if (IGNORED_PATTERNS.some((pattern) => pattern(file))) continue
-    const isRoute = FILE_EXTENSIONS.some((ext) => file.endsWith(ext))
+    const isFile = FILE_EXTENSIONS.some((ext) => file.endsWith(ext))
 
-    if (!isRoute) {
+    if (!isFile) {
       const subDirRoutes = await loadRoutesInDirectory(
         baseDirectory,
         resolve(directory, file),

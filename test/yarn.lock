@@ -17,10 +17,10 @@ __metadata:
 
 "@dataqoi/fastify-router@file:../::locator=%40dataqoi%2Ffastify-router-test-project%40workspace%3A.":
   version: 0.0.4
-  resolution: "@dataqoi/fastify-router@file:../#../::hash=180d96&locator=%40dataqoi%2Ffastify-router-test-project%40workspace%3A."
+  resolution: "@dataqoi/fastify-router@file:../#../::hash=f566b1&locator=%40dataqoi%2Ffastify-router-test-project%40workspace%3A."
   dependencies:
     fastify-plugin: "npm:^5.0.0"
-  checksum: 10c0/197b040cf22c1c5de257fb0c1bf330bcd5c07bb652510a57fd0e81bf5111fe4d634e7e3b3824f899eb428f961d311e68b3ce481289de8e78acab07a444749daf
+  checksum: 10c0/7d4c01fba62a70ce3f9d5be20d40dc48e07d172594618720506ec95a7b67d80eb1ba1e570206b5a55c67bd211df78b68ce0f1510cdac019762f73ae7d61a0121
   languageName: node
   linkType: hard
 
