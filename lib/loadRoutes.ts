@@ -4,7 +4,7 @@ import type { FastifyInstance, RouteHandlerMethod } from 'fastify'
 import type { HTTPMethods } from 'fastify'
 import type { FastifyRouterPluginOptions } from 'lib/plugin'
 
-const FILE_EXTENSIONS = ['.ts', '.js', '.mjs', '.mts']
+const FILE_EXTENSIONS = ['.ts', '.js', '.mjs', '.mts', '.tsx', '.jsx']
 
 const AVAILABLE_METHODS: HTTPMethods[] = [
   'GET',
