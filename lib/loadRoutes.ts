@@ -82,7 +82,13 @@ const loadRoutesInDirectory = async (
   const files = await readdir(directory)
   const routes: Record<
     string,
-    Array<[HTTPMethods, RouteHandlerMethod, any]>
+    Array<
+      [
+        HTTPMethods,
+        RouteHandlerMethod,
+        FastifyRouterOptions[HTTPMethods] | null,
+      ]
+    >
   > = {}
 
   for (const file of files) {
@@ -121,11 +127,17 @@ const loadRoutesInDirectory = async (
 
       const handler = route[method] as RouteHandlerMethod
 
-      let routeOptions: null | FastifyRouterOptions = null
+      let routeOptions: null | FastifyRouterOptions[HTTPMethods] = null
       for (const optionName of AVAILABLE_ROUTE_OPTION_NAMES) {
         if (route[optionName]) {
-          routeOptions = route[optionName][method] ?? {}
-          break
+          const foundRouteOptions =
+            route[optionName][method] ??
+            route[optionName][method.toLowerCase()] ??
+            null
+
+          if (foundRouteOptions) {
+            routeOptions = foundRouteOptions
+          }
         }
       }
 
@@ -134,13 +146,6 @@ const loadRoutesInDirectory = async (
         [method as HTTPMethods, handler, routeOptions],
       ]
 
-      if (options.onRouteLoaded) {
-        options.onRouteLoaded({
-          method,
-          routePath,
-        })
-      }
-
       if (isDefaultPath) {
         const baseRoutePath = routePath.replace(`/${options.version}`, '')
 
@@ -148,13 +153,6 @@ const loadRoutesInDirectory = async (
           ...(routes[baseRoutePath] ?? []),
           [method as HTTPMethods, handler, routeOptions],
         ]
-
-        if (options.onRouteLoaded) {
-          options.onRouteLoaded({
-            method,
-            routePath: baseRoutePath,
-          })
-        }
       }
     }
   }
@@ -171,8 +169,24 @@ export const loadRoutes = async (
 
   for (const url in routes) {
     const methods = routes[url]
-    for (const [method, handler] of methods) {
-      fastify[method.toLowerCase() as Lowercase<typeof method>](url, handler)
+    for (const [method, handler, routeOptions] of methods) {
+      if (routeOptions) {
+        fastify[method.toLowerCase() as Lowercase<typeof method>](
+          url,
+          routeOptions,
+          handler,
+        )
+        options.onRouteLoaded?.({
+          method,
+          routePath: `${url} - (with-route-options)`,
+        })
+      } else {
+        fastify[method.toLowerCase() as Lowercase<typeof method>](url, handler)
+        options.onRouteLoaded?.({
+          method,
+          routePath: url,
+        })
+      }
     }
   }
 }

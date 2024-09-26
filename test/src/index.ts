@@ -1,7 +1,14 @@
 import fastify from 'fastify'
+import { fastifySwagger } from '@fastify/swagger'
+import { fastifySwaggerUi } from '@fastify/swagger-ui'
 import { fastifyRouter } from '@dataqoi/fastify-router'
 
 const app = fastify()
+
+app.register(fastifySwagger)
+app.register(fastifySwaggerUi, {
+  routePrefix: '/docs',
+})
 
 app.register(fastifyRouter, {
   version: 'v2',
