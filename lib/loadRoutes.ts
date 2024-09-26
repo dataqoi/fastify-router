@@ -1,10 +1,24 @@
-import { resolve, join } from 'node:path'
-import { readdir, stat } from 'node:fs/promises'
-import type { FastifyInstance, RouteHandlerMethod } from 'fastify'
-import type { HTTPMethods } from 'fastify'
+import type {
+  FastifyInstance,
+  HTTPMethods,
+  RouteHandlerMethod,
+  RouteOptions,
+} from 'fastify'
 import type { FastifyRouterPluginOptions } from 'lib/plugin'
+import { readdir, stat } from 'node:fs/promises'
+import { join, resolve } from 'node:path'
+
+export type FastifyRouterOptions = Partial<
+  Record<HTTPMethods, Partial<Pick<RouteOptions, 'schema' | 'config'>>>
+>
 
 const FILE_EXTENSIONS = ['.ts', '.js', '.mjs', '.mts', '.tsx', '.jsx']
+
+const AVAILABLE_ROUTE_OPTION_NAMES = [
+  'ROUTE_OPTIONS',
+  'route_options',
+  'routeOptions',
+] as const
 
 const AVAILABLE_METHODS: HTTPMethods[] = [
   'GET',
@@ -66,7 +80,10 @@ const loadRoutesInDirectory = async (
   options: FastifyRouterPluginOptions,
 ) => {
   const files = await readdir(directory)
-  const routes: Record<string, Array<[HTTPMethods, RouteHandlerMethod]>> = {}
+  const routes: Record<
+    string,
+    Array<[HTTPMethods, RouteHandlerMethod, any]>
+  > = {}
 
   for (const file of files) {
     if (IGNORED_PATTERNS.some((pattern) => pattern(file))) continue
@@ -104,9 +121,17 @@ const loadRoutesInDirectory = async (
 
       const handler = route[method] as RouteHandlerMethod
 
+      let routeOptions: null | FastifyRouterOptions = null
+      for (const optionName of AVAILABLE_ROUTE_OPTION_NAMES) {
+        if (route[optionName]) {
+          routeOptions = route[optionName][method] ?? {}
+          break
+        }
+      }
+
       routes[routePath] = [
         ...(routes[routePath] ?? []),
-        [method as HTTPMethods, handler],
+        [method as HTTPMethods, handler, routeOptions],
       ]
 
       if (options.onRouteLoaded) {
@@ -121,7 +146,7 @@ const loadRoutesInDirectory = async (
 
         routes[baseRoutePath] = [
           ...(routes[baseRoutePath] ?? []),
-          [method as HTTPMethods, handler],
+          [method as HTTPMethods, handler, routeOptions],
         ]
 
         if (options.onRouteLoaded) {
